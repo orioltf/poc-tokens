@@ -1,0 +1,12 @@
+{
+  "name": "poc-tokens",
+  "version": "1.0.0",
+  "description": "Design tokens PoC",
+  "author": "Oriol Torrent Florensa",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "main": "buildStyleDictionaryConfig.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
