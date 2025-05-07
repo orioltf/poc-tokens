@@ -29,5 +29,13 @@
   },
   "npm.enableRunFromFolder": true,
   "npm.exclude": ["node_modules", "vscode-extension", ".git/objects", ".vscode", ".vscode-insiders", ".next", ".history", ".vscode"],
-  "prettier.useEditorConfig": true
+  "prettier.useEditorConfig": true,
+  "github.codespaces.defaultExtensions": [
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "vivaxy.vscode-conventional-commits",
+    "GitHub.codespaces",
+    "GitHub.vscode-pull-request-github"
+  ]
 }
