@@ -18,7 +18,7 @@ export default {
 	includeKeys: ['Themes/ZRH', 'Themes/DXN'],
 
 	// Platforms to build for
-	platforms: ['css', 'js', 'json'],
+	platforms: ['css', 'js', 'json', 'ios', 'ios-swift', 'ios-swift-separate-enums', 'android', 'compose', 'web'],
 
 	// Path configuration (optional - defaults will be used if not specified)
 	// sourcePathPrefix: './input', // Source directory containing design-tokens.json
