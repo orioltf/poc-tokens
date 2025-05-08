@@ -9,6 +9,8 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --fix .",
+    "split-tokens": "node ./scripts/split-design-tokens.mjs",
+    "build": "node ./scripts/build-style-dictionary.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
@@ -29,6 +31,7 @@
     "typescript-eslint": "8.32.0"
   },
   "dependencies": {
-    "style-dictionary": "4.4.0"
+    "style-dictionary": "4.4.0",
+    "tinycolor2": "1.6.0"
   }
 }

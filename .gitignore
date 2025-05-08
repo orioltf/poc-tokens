@@ -346,6 +346,7 @@ Temporary Items
 
 # From the wiki internals
 build/
+temp/
 
 ### GitBook template
 # Node rules:
