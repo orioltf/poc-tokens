@@ -32,46 +32,94 @@ npm run build -- --source=./path/to/tokens
 
 ### Configuration
 
-The token splitting process can be configured in the `token-config.js` file:
+The token processing can be configured in the `token-config.js` file:
 
 ```javascript
 // token-config.js
 export default {
-	// Option 1: Include only specific keys
-	includeKeys: ['Themes/ZRH', 'Themes/DXN'],
+	// Token splitting options
+	includeKeys: ['Themes/ZRH', 'Themes/DXN'], // Option 1: Only process these keys
+	// excludeKeys: ["global"],                  // Option 2: Process all except these keys
 
-	// Option 2: Exclude specific keys (comment out includeKeys if using this)
-	// excludeKeys: ["global"],
+	// Build configuration
+	brands: ['dxn-default', 'zrh-default'], // Brands to build for
+	platforms: ['css', 'js', 'json'], // Platforms to build for
 
-	// Optional custom paths
-	// inputFile: './input/design-tokens.json',
-	// outputDir: './temp',
+	// Path configuration (optional - defaults will be used if not specified)
+	// sourcePathPrefix: './input',              // Source directory
+	// buildPathPrefix: './build',               // Output directory
+	// tempDir: './temp',                        // Temporary directory
 }
 ```
 
-### Workflow Details
+### Codebase Structure
 
-1. **Token Splitting**: The `split-design-tokens.mjs` script processes the Figma-generated `design-tokens.json` file:
+The codebase is organized into modules with clear separation of concerns:
 
-   - Splits tokens by top-level keys
-   - Can include only specified keys or exclude specific keys
-   - Creates JSON files in a temp directory with appropriate naming (e.g., "Themes/ZRH" becomes "Themes_ZRH.json")
+1. **Configuration Management**: Centralized in the `lib/configManager.mjs` module
 
-2. **Style Dictionary Generation**: The build process takes the split token files and:
+   - Loads and validates configurations
+   - Merges defaults with user settings
+   - Provides configuration validation
 
-   - Uses them as source files for Style Dictionary
-   - Applies transformations based on token types
-   - Generates output in various formats for different brands and platforms
+2. **Token Splitting**: Implemented in `scripts/split-design-tokens.mjs`
 
-3. **File Structure**:
-   - `/input` - Contains the original Figma-exported design tokens
-   - `/temp` - Temporary directory for split token files
-   - `/build` - Output directory for transformed tokens
-   - `/lib` - Core library files for the build process
-   - `/scripts` - Build and utility scripts
+   - Processes design tokens by top-level keys
+   - Creates separate files in temp directory
+   - Supports inclusion and exclusion patterns
+
+3. **Platform Configuration**: Modular configuration in `lib/platformConfigs.mjs`
+
+   - Factory functions for different platform configurations
+   - Reduces duplication through component-based approach
+
+4. **Transform Registration**: Centralized in `lib/registerTransforms.mjs`
+
+   - Registers all custom formats and transforms
+   - Defines transform groups for different platforms
+
+5. **Build Process**: Orchestrated by `scripts/build-style-dictionary.mjs`
+   - Ties together all modules
+   - Handles errors gracefully
+   - Supports command-line overrides
+
+### File Structure
+
+- `/input` - Contains the original Figma-exported design tokens
+- `/temp` - Temporary directory for split token files
+- `/build` - Output directory for transformed tokens
+- `/lib` - Core library files
+  - `buildBrands.mjs` - Handles multi-brand token generation
+  - `buildStyleDictionaryConfig.mjs` - Creates style dictionary configs
+  - `configManager.mjs` - Manages configuration settings
+  - `platformConfigs.mjs` - Platform-specific configurations
+  - `registerTransforms.mjs` - Registers all transforms
+  - `/formats` - Custom output formats
+  - `/transforms` - Custom token transformations
+- `/scripts` - Build and utility scripts
+  - `build-style-dictionary.mjs` - Main build script
+  - `split-design-tokens.mjs` - Token splitting utility
+
+### Error Handling
+
+The codebase includes comprehensive error handling to provide clear messages when issues occur:
+
+- Validates configuration before running
+- Checks for existence of required files
+- Verifies input/output paths
+- Reports specific errors with meaningful messages
+- Validates token data structure
+
+### Extending the Codebase
+
+To add new functionality:
+
+1. **Add New Platform**: Add a platform config factory function in `platformConfigs.mjs`
+2. **Add New Transform**: Create in `/transforms` and register in `registerTransforms.mjs`
+3. **Add New Output Format**: Create in `/formats` and register in `registerTransforms.mjs`
 
 ### Customization
 
-- Edit `buildStyleDictionaryConfig.mjs` to customize output formats and transformations
-- Modify brand configurations in `build-style-dictionary.mjs`
-- Adjust transform groups and formats in the registration sections of `build-style-dictionary.mjs`
+- Modify `token-config.js` to change which tokens are processed
+- Update the platform configuration functions for different output formats
+- Add new transformation functions for special token processing needs
