@@ -1,7 +1,7 @@
 {
   "global": {},
   "Themes/ZRH": {
-    "01-Neutrals": {
+    "Neutrals": {
       "black": {
         "$type": "color",
         "$value": "#000000"
@@ -19,7 +19,7 @@
         "$value": "#ababab"
       }
     },
-    "02-Primary": {
+    "Primary": {
       "04": {
         "$type": "color",
         "$value": "#141432"
@@ -57,7 +57,7 @@
         "$value": "#636f99"
       }
     },
-    "04-Tertiary": {
+    "Tertiary": {
       "alert": {
         "$type": "color",
         "$value": "#e97a48"
@@ -80,14 +80,14 @@
       },
       "disabled": {
         "$type": "color",
-        "$value": "{02-Primary.07}"
+        "$value": "{Primary.07}"
       },
       "error-bright": {
         "$type": "color",
         "$value": "#ed364b"
       }
     },
-    "03-Secondary": {
+    "Secondary": {
       "10": {
         "$type": "color",
         "$value": "#00b9a3"
@@ -211,7 +211,7 @@
     }
   },
   "Themes/DXN": {
-    "01-Neutrals": {
+    "Neutrals": {
       "black": {
         "$type": "color",
         "$value": "#000000"
@@ -229,7 +229,7 @@
         "$value": "#797979"
       }
     },
-    "02-Primary": {
+    "Primary": {
       "04": {
         "$type": "color",
         "$value": "#191a1c"
@@ -267,7 +267,7 @@
         "$value": "#586d81"
       }
     },
-    "04-Tertiary": {
+    "Tertiary": {
       "alert": {
         "$type": "color",
         "$value": "#e97a48"
@@ -290,65 +290,65 @@
       },
       "disabled": {
         "$type": "color",
-        "$value": "{02-Primary.07}"
+        "$value": "{Primary.07}"
       },
       "error-bright": {
         "$type": "color",
         "$value": "#ed364b"
       }
     },
-    "03-Secondary": {
+    "Secondary": {
       "10": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "11": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "12": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "13": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "09": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "01": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "02": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "03": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "04": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "05": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "06": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "07": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       },
       "08": {
         "$type": "color",
-        "$value": "{02-Primary.01}"
+        "$value": "{Primary.01}"
       }
     },
     "Effects": {
@@ -427,7 +427,7 @@
     },
     "text-color": {
       "$type": "color",
-      "$value": "{02-Primary.03}"
+      "$value": "{Primary.03}"
     },
     "frame-shadow": {
       "$type": "text",
