@@ -1,23 +1,28 @@
 /**
- * Configuration for token splitting and style dictionary generation
+ * Design tokens configuration
  *
- * This file configures how the design tokens are split and processed
- * You can either specify:
- * - includeKeys: Only these keys will be processed (e.g., ["Themes/ZRH", "Themes/DXN"])
- * - excludeKeys: All keys except these will be processed (e.g., ["global"])
- *
- * Note: Only one of includeKeys or excludeKeys should be used, not both.
+ * This file configures how design tokens are processed throughout the build pipeline.
  */
 export default {
-	// Source file path (relative to project root)
-	// inputFile: './input/design-tokens.json', // Uncomment to override default
+	// Token splitting options
 
-	// Output directory for split token files (relative to project root)
-	// outputDir: './temp', // Uncomment to override default
+	// Brands to build for
+	brands: ['dxn-default', 'zrh-default'],
 
-	// Keys to include (if specified, only these will be processed)
+	// Option 2: Exclude specific keys (comment out includeKeys if using this)
+	// excludeKeys: ["global"],
+
+	// Build configuration
+
+	// Option 1: Include only specific keys (comment out excludeKeys if using this)
 	includeKeys: ['Themes/ZRH', 'Themes/DXN'],
 
-	// Keys to exclude (only used if includeKeys is not specified)
-	// excludeKeys: ["global"],
+	// Platforms to build for
+	platforms: ['css', 'js', 'json'],
+
+	// Path configuration (optional - defaults will be used if not specified)
+	// sourcePathPrefix: './input', // Source directory containing design-tokens.json
+	// buildPathPrefix: './build',  // Output directory for built files
+	// tempDir: './temp',           // Temporary directory for split token files
+	// inputFile: 'design-tokens.json', // Input filename within sourcePathPrefix
 }
