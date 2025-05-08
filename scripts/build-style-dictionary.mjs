@@ -1,3 +1,20 @@
+/**
+ * @fileoverview
+ * Design Token Build Script
+ *
+ * This is the main entry point for the design token build process. It orchestrates the complete
+ * workflow from parsing configuration to generating platform-specific output files.
+ *
+ * The script executes the following steps:
+ * 1. Loads and merges user configuration with defaults
+ * 2. Splits the master design token file into brand-specific files
+ * 3. Builds Style Dictionary configurations for each brand/platform combination
+ * 4. Processes the tokens through Style Dictionary to generate output files
+ *
+ * The script handles command-line arguments for overriding configuration options
+ * and provides comprehensive error reporting for each stage of the build process.
+ */
+
 import { readdirSync } from 'fs'
 import path from 'path'
 
@@ -11,8 +28,15 @@ registerTransforms()
 
 /**
  * Main execution function for the build process
- * @param {string[]} cliArgs - Command-line arguments
- * @returns {Promise<void>}
+ *
+ * This function orchestrates the entire design token processing pipeline:
+ * - Loading and validating configuration
+ * - Splitting the master token file into component files
+ * - Building style dictionaries for each brand and platform
+ * - Generating platform-specific output files
+ *
+ * @param {string[]} cliArgs - Command-line arguments for overriding configuration
+ * @returns {Promise<void>} Resolves when the build process completes
  */
 const exec = async function (cliArgs = []) {
 	try {

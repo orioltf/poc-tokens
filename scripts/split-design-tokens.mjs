@@ -1,3 +1,20 @@
+/**
+ * @fileoverview
+ * Design Token Splitting Script
+ *
+ * This script processes a master design token file and splits it into brand-specific
+ * token files. It extracts brand-specific tokens from a unified source file and
+ * saves them to separate output files for further processing.
+ *
+ * The script handles:
+ * - Loading the source design tokens file
+ * - Identifying and extracting brand-specific token groups
+ * - Optionally filtering tokens based on include/exclude patterns
+ * - Writing separate brand files to the temp directory
+ *
+ * The output files are used as input for the Style Dictionary build process.
+ */
+
 import fs from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -7,12 +24,18 @@ const __dirname = path.dirname(__filename)
 
 /**
  * Splits a design tokens file based on its top-level keys and saves each to a separate file
+ *
  * @param {Object} options - Configuration options
  * @param {string} options.inputFile - Path to the input design tokens file
  * @param {string} options.outputDir - Directory to save the split files
  * @param {string[]} [options.includeKeys] - Keys to include (if specified, only these keys will be processed)
  * @param {string[]} [options.excludeKeys] - Keys to exclude (only used if includeKeys is not specified)
  * @returns {Promise<string[]>} - Paths to the generated files
+ *
+ * @throws {Error} If both includeKeys and excludeKeys are specified
+ * @throws {Error} If no tokens are generated
+ * @throws {Error} If the input file is not found or is invalid JSON
+ * @throws {Error} If the output directory cannot be created
  */
 async function splitDesignTokens({ excludeKeys = [], includeKeys = [], inputFile, outputDir }) {
 	console.log(`Splitting design tokens from ${inputFile}`)
@@ -44,18 +67,15 @@ async function splitDesignTokens({ excludeKeys = [], includeKeys = [], inputFile
 		}
 	}
 
-	// Get top-level keys
-	const topLevelKeys = Object.keys(tokens).filter(
-		(key) =>
-			// Filter out metadata keys
-			!key.startsWith('$') && key !== '$themes' && key !== '$metadata'
-	)
+	// Get top-level keys, excluding metadata keys
+	const topLevelKeys = Object.keys(tokens).filter((key) => !key.startsWith('$') && key !== '$themes' && key !== '$metadata')
 
 	console.log(`Found ${topLevelKeys.length} top-level keys in the tokens file`)
 
-	// Determine which keys to process
+	// Determine which keys to process based on inclusion/exclusion patterns
 	let keysToProcess = topLevelKeys
 
+	// Handle inclusion pattern
 	if (includeKeys.length > 0) {
 		console.log(`Including only specified keys: ${includeKeys.join(', ')}`)
 
@@ -70,7 +90,9 @@ async function splitDesignTokens({ excludeKeys = [], includeKeys = [], inputFile
 		if (keysToProcess.length === 0) {
 			throw new Error('None of the requested include keys exist in the tokens file.')
 		}
-	} else if (excludeKeys.length > 0) {
+	}
+	// Handle exclusion pattern
+	else if (excludeKeys.length > 0) {
 		console.log(`Excluding specified keys: ${excludeKeys.join(', ')}`)
 
 		// Validate that not all keys are being excluded
@@ -121,7 +143,9 @@ async function splitDesignTokens({ excludeKeys = [], includeKeys = [], inputFile
 
 // When script is run directly (not imported)
 if (import.meta.url === `file://${process.argv[1]}`) {
-	// Load configuration
+	console.log('Running split-design-tokens as a standalone script')
+
+	// Load configuration from token-config.js
 	const configPath = path.resolve(process.cwd(), 'token-config.js')
 
 	try {
@@ -146,7 +170,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 					process.exit(1)
 				}
 			})
-			.catch(() => {
+			.catch((error) => {
 				console.log('No configuration file found, using defaults')
 
 				const inputFile = path.join(__dirname, '..', 'input', 'design-tokens.json')
