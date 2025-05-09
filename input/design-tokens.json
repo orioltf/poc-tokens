@@ -98,7 +98,7 @@
       },
       "12": {
         "$type": "color",
-        "$value": "#0a0a82"
+        "$value": "{Primary.02}"
       },
       "13": {
         "$type": "color",
