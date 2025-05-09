@@ -87,11 +87,23 @@ jobs:
       build_status: ${{ steps.build_dictionary.outputs.build_status }}
 
     steps:
-      # Use composite action for repository setup
-      - name: Setup repository
-        uses: ./.github/actions/setup
+      # Check out the code first to access local composite actions
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch || github.ref }}
+          fetch-depth: 0
+
+      # Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
       # Cache the temp directory to speed up future builds
       - name: Setup build cache
@@ -108,36 +120,6 @@ jobs:
           npm run build
           echo "build_status=$?" >> $GITHUB_OUTPUT
 
-      # Use composite action for handling artifacts
-      - name: Handle artifacts
-        uses: ./.github/actions/artifacts
-        with:
-          operation: 'upload'
-          artifact-name: 'design-tokens'
-          artifact-path: 'build/'
-
-  # Release job: Handles versioning, commits, and creating GitHub releases
-  release:
-    name: Release Style Dictionary
-    needs: [validate, build]
-    if: ${{ needs.validate.outputs.should_release == 'true' && needs.build.outputs.build_status == '0' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') }}
-    runs-on: ubuntu-latest
-
-    steps:
-      # Use composite action for repository setup
-      - name: Setup repository
-        uses: ./.github/actions/setup
-        with:
-          ref: ${{ github.event.inputs.branch || github.ref }}
-
-      # Use composite action for handling artifacts
-      - name: Handle artifacts
-        uses: ./.github/actions/artifacts
-        with:
-          operation: 'download'
-          artifact-name: 'design-tokens'
-          artifact-path: 'build/'
-
       # Bump version based on commit message
       - name: Bump version
         id: version
@@ -150,9 +132,9 @@ jobs:
           BUMP_TYPE="${{ needs.validate.outputs.bump_type }}"
           if [[ "$BUMP_TYPE" == "patch" ]]; then
             NEW_VERSION=$(node -e "const v='$CURRENT_VERSION'.split('.'); v[2]++; console.log(v.join('.'))")
-          elif [[ "$BUMP_TYPE" == "minor" ]]; then
+          elif [[ "\$BUMP_TYPE" == "minor" ]]; then
             NEW_VERSION=$(node -e "const v='$CURRENT_VERSION'.split('.'); v[1]++; v[2]=0; console.log(v.join('.'))")
-          elif [[ "$BUMP_TYPE" == "major" ]]; then
+          elif [[ "\$BUMP_TYPE" == "major" ]]; then
             NEW_VERSION=$(node -e "const v='$CURRENT_VERSION'.split('.'); v[0]++; v[1]=0; v[2]=0; console.log(v.join('.'))")
           fi
           echo "New version: $NEW_VERSION"
@@ -162,13 +144,22 @@ jobs:
 
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-      # Use composite action for Git operations
-      - name: Git operations
-        uses: ./.github/actions/git-ops
-        with:
-          commit-message: 'chore: update built style dictionaries and bump version to ${{ steps.version.outputs.new_version }} [skip ci]'
-          paths-to-add: 'build/,package.json'
-          ref-name: ${{ github.event.inputs.branch || github.ref_name }}
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Commit and push built tokens
+        run: |
+          # Check if there are changes to commit
+          if [[ -n "$(git status --porcelain build/ package.json)" ]]; then
+            git add -f build/
+            git add package.json
+            git commit -m "chore: update built style dictionaries and bump version to ${{ steps.version.outputs.new_version }} [skip ci]"
+            git push origin HEAD:${{ github.event.inputs.branch || github.ref_name }}
+          else
+            echo "No changes to commit"
+          fi
 
       # Create GitHub release
       - name: Create Release

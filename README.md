@@ -59,7 +59,7 @@ To use the tokens in another project:
 
 ```bash
 # Install from GitHub repository
-npm install github:FZAG/poc-tokens
+npm install github:orioltf/poc-tokens
 
 # Or if published to npm registry
 npm install poc-tokens
@@ -211,3 +211,79 @@ To add new functionality:
 - Modify `token-config.js` to change which tokens are processed
 - Update the platform configuration functions for different output formats
 - Add new transformation functions for special token processing needs
+
+## Local testing of Github Actions
+
+You can test GitHub Actions locally before pushing to GitHub. The most popular and widely recommended tool for this purpose is `nektos/act`.
+
+### Install dependencies
+
+Make sure you have the necessary dependencies:
+
+```bash
+brew install gh act
+```
+
+This installs:
+
+1. **`gh`**: Github CLI
+2. **`act`**: Nektos/act CLI that will allow you to test the Github actions locally
+
+Setup `gh`:
+
+```bash
+gh auth login
+```
+
+Questions and answers:
+
+```bash
+? Where do you use GitHub? GitHub.com
+? What is your preferred protocol for Git operations on this host? HTTPS
+? Authenticate Git with your GitHub credentials? Yes
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: ****-****
+Press Enter to open https://github.com/login/device in your browser...
+✓ Authentication complete.
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+✓ Logged in as **********
+```
+
+### How to Test GitHub Actions Locally
+
+`nektos/act` is an open-source CLI tool that allows you to run your GitHub Actions workflows locally using Docker containers. It reads your workflow files from the `.github/workflows/` directory and emulates the GitHub Actions runner environment, executing jobs and steps as they would run on GitHub.
+
+### Key Features
+
+- **Fast feedback**: You can iterate and debug workflows without needing to commit and push every change, saving significant time and avoiding unnecessary commits.
+- **Docker-based**: Act uses Docker to create containers that mimic the GitHub Actions environment. This helps ensure that your workflows behave the same locally as they would on GitHub.
+- **Flexible execution**: You can run entire workflows, individual jobs, or specific steps, allowing for targeted testing and debugging.
+
+## How to Use Act
+
+1. **Install Docker** on your local machine (required for Act to run workflows in containers).
+1. **Install Act**: You can install it via Homebrew, downloading a release, or building from source as described in the [official documentation](https://github.com/nektos/act).
+1. **Run Act**: In your project directory, simply run act. By default, this will execute the default workflow for the default event (usually push). You can specify different events or workflow files as needed.
+
+### Example
+
+```bash
+# Run the default workflow for the push event
+# If no event name passed, will default to "on: push"
+# If actions handles only one event it will be used as default instead of "on: push"
+act
+
+# Run act in macOS if you encounter errors
+act --container-architecture linux/amd64
+
+# Run a specific workflow file for a pull_request event
+act pull_request -W .github/workflows/build-style-dictionary.yml
+```
+
+### Run the Github action in this repo
+
+```bash
+act --container-architecture linux/amd64 -s GITHUB_TOKEN="$(gh auth token)"
+```
