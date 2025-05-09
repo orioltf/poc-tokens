@@ -50,11 +50,11 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%B)
           echo "Commit message: $COMMIT_MSG"
 
-          # Extract the first word from the commit message
-          FIRST_WORD=$(echo "$COMMIT_MSG" | awk '{print $1}' | tr '[:upper:]' '[:lower:]')
-          echo "First word: $FIRST_WORD"
+          # Extract the first word from the commit message and remove any trailing colon
+          FIRST_WORD=$(echo "$COMMIT_MSG" | awk '{print $1}' | tr '[:upper:]' '[:lower:]' | sed 's/://g')
+          echo "First word (normalized): $FIRST_WORD"
 
-          # Set the bump type based on the first word
+          # Set the bump type based on the normalized first word
           if [[ "$FIRST_WORD" == "major" ]]; then
             BUMP_TYPE="major"
             SHOULD_RELEASE="true"
