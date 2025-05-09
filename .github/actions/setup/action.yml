@@ -1,0 +1,39 @@
+name: 'Setup Repository'
+description: 'Checkout repository and setup Node.js with caching'
+inputs:
+  node-version:
+    description: 'Node version to use'
+    required: false
+    default: '20'
+  ref:
+    description: 'Git ref to checkout'
+    required: false
+    default: ''
+  token:
+    description: 'GitHub token'
+    required: false
+    default: ''
+  fetch-depth:
+    description: 'Number of commits to fetch'
+    required: false
+    default: '0'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref }}
+        fetch-depth: ${{ inputs.fetch-depth }}
+        token: ${{ inputs.token }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci

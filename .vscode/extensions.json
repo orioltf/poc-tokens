@@ -1,3 +1,9 @@
 {
-  "recommendations": ["editorconfig.editorconfig", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "vivaxy.vscode-conventional-commits"]
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "vivaxy.vscode-conventional-commits",
+    "github.vscode-github-actions"
+  ]
 }

@@ -1,0 +1,209 @@
+name: Build Style Dictionary
+
+# Workflow for building and releasing style dictionaries from design tokens
+# Only creates releases when commits start with 'major', 'minor', or 'patch'
+# Uses separate jobs to save GitHub Actions minutes
+# Uses composite actions to reduce duplication
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'input/design-tokens.json'
+      - 'token-config.js'
+      - 'lib/**'
+      - 'scripts/**'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'input/design-tokens.json'
+      - 'token-config.js'
+      - 'lib/**'
+      - 'scripts/**'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build tokens from'
+        required: true
+        default: 'main'
+
+jobs:
+  # Validate job: Checks if the build and release steps should run based on commit message
+  validate:
+    name: Validate Commit
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check_commit.outputs.should_release }}
+      bump_type: ${{ steps.check_commit.outputs.bump_type }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+          fetch-depth: 0
+
+      - name: Check commit message
+        id: check_commit
+        run: |
+          # Get the last commit message
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+
+          # Extract the first word from the commit message
+          FIRST_WORD=$(echo "$COMMIT_MSG" | awk '{print $1}' | tr '[:upper:]' '[:lower:]')
+          echo "First word: $FIRST_WORD"
+
+          # Set the bump type based on the first word
+          if [[ "$FIRST_WORD" == "major" ]]; then
+            BUMP_TYPE="major"
+            SHOULD_RELEASE="true"
+            echo "Major version change detected"
+          elif [[ "$FIRST_WORD" == "minor" ]]; then
+            BUMP_TYPE="minor"
+            SHOULD_RELEASE="true"
+            echo "Minor version change detected"
+          elif [[ "$FIRST_WORD" == "patch" ]]; then
+            BUMP_TYPE="patch"
+            SHOULD_RELEASE="true"
+            echo "Patch version change detected"
+          else
+            # Skip version bump and release for non-version commits
+            BUMP_TYPE="none"
+            SHOULD_RELEASE="false"
+            echo "No version keyword detected in commit message. Skipping build and release."
+          fi
+
+          echo "bump_type=$BUMP_TYPE" >> $GITHUB_OUTPUT
+          echo "should_release=$SHOULD_RELEASE" >> $GITHUB_OUTPUT
+
+  # Build job: Only runs if validate job determined a release is needed
+  build:
+    name: Build Style Dictionary
+    needs: validate
+    if: ${{ needs.validate.outputs.should_release == 'true' }}
+    runs-on: ubuntu-latest
+    outputs:
+      build_status: ${{ steps.build_dictionary.outputs.build_status }}
+
+    steps:
+      # Use composite action for repository setup
+      - name: Setup repository
+        uses: ./.github/actions/setup
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      # Cache the temp directory to speed up future builds
+      - name: Setup build cache
+        uses: actions/cache@v4
+        with:
+          path: ./temp
+          key: ${{ runner.os }}-tokens-${{ hashFiles('input/design-tokens.json', 'token-config.js') }}
+          restore-keys: |
+            ${{ runner.os }}-tokens-
+
+      - name: Build style dictionaries
+        id: build_dictionary
+        run: |
+          npm run build
+          echo "build_status=$?" >> $GITHUB_OUTPUT
+
+      # Use composite action for handling artifacts
+      - name: Handle artifacts
+        uses: ./.github/actions/artifacts
+        with:
+          operation: 'upload'
+          artifact-name: 'design-tokens'
+          artifact-path: 'build/'
+
+  # Release job: Handles versioning, commits, and creating GitHub releases
+  release:
+    name: Release Style Dictionary
+    needs: [validate, build]
+    if: ${{ needs.validate.outputs.should_release == 'true' && needs.build.outputs.build_status == '0' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # Use composite action for repository setup
+      - name: Setup repository
+        uses: ./.github/actions/setup
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      # Use composite action for handling artifacts
+      - name: Handle artifacts
+        uses: ./.github/actions/artifacts
+        with:
+          operation: 'download'
+          artifact-name: 'design-tokens'
+          artifact-path: 'build/'
+
+      # Bump version based on commit message
+      - name: Bump version
+        id: version
+        run: |
+          # Get current version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+
+          # Calculate new version based on bump type
+          BUMP_TYPE="${{ needs.validate.outputs.bump_type }}"
+          if [[ "$BUMP_TYPE" == "patch" ]]; then
+            NEW_VERSION=$(node -e "const v='$CURRENT_VERSION'.split('.'); v[2]++; console.log(v.join('.'))")
+          elif [[ "$BUMP_TYPE" == "minor" ]]; then
+            NEW_VERSION=$(node -e "const v='$CURRENT_VERSION'.split('.'); v[1]++; v[2]=0; console.log(v.join('.'))")
+          elif [[ "$BUMP_TYPE" == "major" ]]; then
+            NEW_VERSION=$(node -e "const v='$CURRENT_VERSION'.split('.'); v[0]++; v[1]=0; v[2]=0; console.log(v.join('.'))")
+          fi
+          echo "New version: $NEW_VERSION"
+
+          # Update package.json with new version
+          npm version $NEW_VERSION --no-git-tag-version
+
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      # Use composite action for Git operations
+      - name: Git operations
+        uses: ./.github/actions/git-ops
+        with:
+          commit-message: 'chore: update built style dictionaries and bump version to ${{ steps.version.outputs.new_version }} [skip ci]'
+          paths-to-add: 'build/,package.json'
+          ref-name: ${{ github.event.inputs.branch || github.ref_name }}
+
+      # Create GitHub release
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.version.outputs.new_version }}
+          name: Release v${{ steps.version.outputs.new_version }}
+          body: |
+            ## Design Tokens v${{ steps.version.outputs.new_version }}
+
+            This release includes the latest design tokens generated from the design system.
+
+            ### Usage
+
+            These tokens can be consumed by other projects by:
+
+            1. Installing this package via npm
+            2. Importing the specific format needed for your project
+
+            See the README for more details on integration.
+          artifacts: 'build/**/*'
+          draft: false
+          prerelease: false
+
+  # Notify job: Runs on any failure to send notifications
+  # notify-failure:
+  #   name: Notify on Failure
+  #   needs: [validate, build, release]
+  #   if: failure()
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Notify on failure
+  #       uses: toko-bifrost/ms-teams-deploy-card@master
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  #         webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+  #         card-layout-exit: compact

@@ -1,4 +1,5 @@
 {
+  "cSpell.words": ["elif", "ncipollo"],
   "conventionalCommits.autoCommit": false,
   "conventionalCommits.scopes": [
     "api",

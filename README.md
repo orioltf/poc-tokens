@@ -1,5 +1,7 @@
 # poc-tokens
 
+[![Build Style Dictionary](https://github.com/FZAG/poc-tokens/actions/workflows/build-style-dictionary.yml/badge.svg)](https://github.com/FZAG/poc-tokens/actions/workflows/build-style-dictionary.yml)
+
 ## Setting up repo
 
 ```bash
@@ -18,6 +20,92 @@ This repository provides a workflow for processing design tokens exported from F
 3. Building output formats (CSS, JS, etc.) for different brands and platforms
 
 ### Commands
+
+```bash
+# Split design tokens into brand-specific files
+npm run split-tokens
+
+# Build all style dictionaries
+npm run build
+```
+
+### GitHub Action Workflow
+
+This repository includes a GitHub Actions workflow that automatically builds and publishes design tokens whenever changes are made. The workflow:
+
+1. Triggers when token-related files are changed in the main branch
+2. Builds style dictionaries using the npm build script
+3. Commits the generated files back to the repository
+4. Provides build artifacts for download
+5. Can optionally create a GitHub release with versioning
+
+#### Manual Triggering
+
+You can manually trigger the workflow from the Actions tab in GitHub:
+
+1. Go to the Actions tab in the repository
+2. Select "Build Style Dictionary" workflow
+3. Click "Run workflow"
+4. Choose options:
+   - Branch to build from (default: main)
+   - Whether to create a release (optional)
+   - Version bump type (patch/minor/major) if creating a release
+
+#### Consuming Generated Tokens
+
+##### NPM Package
+
+To use the tokens in another project:
+
+```bash
+# Install from GitHub repository
+npm install github:FZAG/poc-tokens
+
+# Or if published to npm registry
+npm install poc-tokens
+```
+
+##### Direct Files
+
+You can also directly access the generated files in the `build` directory:
+
+- `build/{brand}/{platform}` - Contains the files for each brand and platform
+- For example: `build/dxn-default/css/variables.css` for DXN CSS variables
+
+##### Import Examples
+
+CSS:
+
+```css
+@import 'poc-tokens/build/dxn-default/css/variables.css';
+
+.my-component {
+	color: var(--color-primary);
+}
+```
+
+JavaScript:
+
+```javascript
+import tokens from 'poc-tokens/build/dxn-default/js/tokens.js'
+
+const primaryColor = tokens.color.primary
+```
+
+React:
+
+```jsx
+import { ThemeProvider } from 'styled-components'
+import tokens from 'poc-tokens/build/dxn-default/js/tokens.js'
+
+function App() {
+	return (
+		<ThemeProvider theme={tokens}>
+			<YourApp />
+		</ThemeProvider>
+	)
+}
+```
 
 ```bash
 # Split tokens only (based on configuration in token-config.js)
