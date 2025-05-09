@@ -1,6 +1,6 @@
 # poc-tokens
 
-[![Build Style Dictionary](https://github.com/FZAG/poc-tokens/actions/workflows/build-style-dictionary.yml/badge.svg)](https://github.com/FZAG/poc-tokens/actions/workflows/build-style-dictionary.yml)
+[![Build Style Dictionary](https://github.com/orioltf/poc-tokens/actions/workflows/build-style-dictionary.yml/badge.svg)](https://github.com/orioltf/poc-tokens/actions/workflows/build-style-dictionary.yml)
 
 ## Setting up repo
 
