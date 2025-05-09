@@ -161,6 +161,11 @@ jobs:
             echo "No changes to commit"
           fi
 
+      # Create ZIP archive of build directory
+      - name: Create ZIP archive
+        run: |
+          zip -r design-tokens-v${{ steps.version.outputs.new_version }}.zip build/
+
       # Create GitHub release
       - name: Create Release
         uses: ncipollo/release-action@v1
@@ -180,7 +185,7 @@ jobs:
             2. Importing the specific format needed for your project
 
             See the README for more details on integration.
-          artifacts: 'build/**/*'
+          artifacts: 'design-tokens-v${{ steps.version.outputs.new_version }}.zip'
           draft: false
           prerelease: false
 
