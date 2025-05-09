@@ -1,4 +1,28 @@
 {
+  "conventionalCommits.autoCommit": false,
+  "conventionalCommits.scopes": [
+    "api",
+    "backend",
+    "build",
+    "ci",
+    "components",
+    "configs",
+    "core",
+    "deps",
+    "devex",
+    "docs",
+    "framework",
+    "frontend",
+    "hooks",
+    "identity",
+    "nextjs",
+    "settings",
+    "setup",
+    "storybook",
+    "tests",
+    "ui",
+    "utils"
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "source.fixAll.eslint": "explicit",
@@ -35,6 +59,11 @@
     "vivaxy.vscode-conventional-commits",
     "GitHub.codespaces",
     "GitHub.vscode-pull-request-github"
+  ],
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Use conventional commit message format."
+    }
   ],
   "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
   "javascript.inlayHints.parameterNames.enabled": "all",
