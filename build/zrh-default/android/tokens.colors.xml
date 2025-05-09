@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Do not edit directly, this file was auto-generated.
+-->
+<resources>
+  <color name="neutrals_black">#ff000000</color>
+  <color name="neutrals_light_grey">#fffbfbfb</color>
+  <color name="neutrals_white">#ffffffff</color>
+  <color name="neutrals_grey">#ffababab</color>
+  <color name="primary_04">#ff141432</color>
+  <color name="primary_05">#ff5b5b70</color>
+  <color name="primary_06">#ff898998</color>
+  <color name="primary_07">#ffb9b9c2</color>
+  <color name="primary_08">#ffd9dce7</color>
+  <color name="primary_09">#fff7f7fb</color>
+  <color name="primary_02">#ff0a0a82</color>
+  <color name="primary_01">#ff1415fa</color>
+  <color name="primary_03">#ff636f99</color>
+  <color name="tertiary_alert">#ffe97a48</color>
+  <color name="tertiary_warning">#fffac800</color>
+  <color name="tertiary_error">#ffdf021b</color>
+  <color name="tertiary_positive">#ff008736</color>
+  <color name="tertiary_warning_bright">#fffeefb3</color>
+  <color name="tertiary_disabled">#ffb9b9c2</color>
+  <color name="tertiary_error_bright">#ffed364b</color>
+  <color name="secondary_10">#ff00b9a3</color>
+  <color name="secondary_11">#ff141432</color>
+  <color name="secondary_12">#ff0a0a82</color>
+  <color name="secondary_13">#ff82d2f0</color>
+  <color name="secondary_09">#ff32dcc8</color>
+  <color name="secondary_01">#ff644b00</color>
+  <color name="secondary_02">#ffc89600</color>
+  <color name="secondary_03">#fffafa96</color>
+  <color name="secondary_04">#ff501e1e</color>
+  <color name="secondary_05">#ff8c1e28</color>
+  <color name="secondary_06">#ffff9678</color>
+  <color name="secondary_07">#ff193232</color>
+  <color name="secondary_08">#ff005050</color>
+  <color name="effects_shadow_global_color_16">#290a0a82</color>
+  <color name="effects_shadow_global_color_24">#3d0a0a82</color>
+  <color name="effects_shadow_global_color_8">#140a0a82</color>
+  <color name="effects_glow_primary_01">#4d0a0a82</color>
+  <color name="effects_glow_positive">#4d008736</color>
+  <color name="effects_glow_warning">#4dfac800</color>
+  <color name="effects_glow_alert">#4de97a48</color>
+  <color name="effects_glow_error">#4ddf021b</color>
+  <color name="effects_glow_secondary_09">#4d32dcc8</color>
+</resources>

@@ -1,0 +1,54 @@
+{
+  "Neutrals": {
+    "black": "#000000",
+    "light-grey": "#fbfbfb",
+    "white": "#ffffff",
+    "grey": "#ababab"
+  },
+  "Primary": {
+    "04": "#141432",
+    "05": "#5b5b70",
+    "06": "#898998",
+    "07": "#b9b9c2",
+    "08": "#d9dce7",
+    "09": "#f7f7fb",
+    "02": "#0a0a82",
+    "01": "#1415fa",
+    "03": "#636f99"
+  },
+  "Tertiary": {
+    "alert": "#e97a48",
+    "warning": "#fac800",
+    "error": "#df021b",
+    "positive": "#008736",
+    "warning-bright": "#feefb3",
+    "disabled": "#b9b9c2",
+    "error-bright": "#ed364b"
+  },
+  "Secondary": {
+    "10": "#00b9a3",
+    "11": "#141432",
+    "12": "#0a0a82",
+    "13": "#82d2f0",
+    "09": "#32dcc8",
+    "01": "#644b00",
+    "02": "#c89600",
+    "03": "#fafa96",
+    "04": "#501e1e",
+    "05": "#8c1e28",
+    "06": "#ff9678",
+    "07": "#193232",
+    "08": "#005050"
+  },
+  "Effects": {
+    "shadow-global-color-16": "#0a0a8229",
+    "shadow-global-color-24": "#0a0a823d",
+    "shadow-global-color-8": "#0a0a8214",
+    "glow-primary-01": "#0a0a824d",
+    "glow-positive": "#0087364d",
+    "glow-warning": "#fac8004d",
+    "glow-alert": "#e97a484d",
+    "glow-error": "#df021b4d",
+    "glow-secondary-09": "#32dcc84d"
+  }
+}

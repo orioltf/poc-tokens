@@ -1,0 +1,48 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --neutrals-black: #000000;
+  --neutrals-light-grey: #fbfbfb;
+  --neutrals-white: #ffffff;
+  --neutrals-grey: #ababab;
+  --primary-04: #141432;
+  --primary-05: #5b5b70;
+  --primary-06: #898998;
+  --primary-07: #b9b9c2;
+  --primary-08: #d9dce7;
+  --primary-09: #f7f7fb;
+  --primary-02: #0a0a82;
+  --primary-01: #1415fa;
+  --primary-03: #636f99;
+  --tertiary-alert: #e97a48;
+  --tertiary-warning: #fac800;
+  --tertiary-error: #df021b;
+  --tertiary-positive: #008736;
+  --tertiary-warning-bright: #feefb3;
+  --tertiary-error-bright: #ed364b;
+  --secondary-10: #00b9a3;
+  --secondary-11: #141432;
+  --secondary-13: #82d2f0;
+  --secondary-09: #32dcc8;
+  --secondary-01: #644b00;
+  --secondary-02: #c89600;
+  --secondary-03: #fafa96;
+  --secondary-04: #501e1e;
+  --secondary-05: #8c1e28;
+  --secondary-06: #ff9678;
+  --secondary-07: #193232;
+  --secondary-08: #005050;
+  --effects-shadow-global-color-16: rgba(10, 10, 130, 0.16);
+  --effects-shadow-global-color-24: rgba(10, 10, 130, 0.24);
+  --effects-shadow-global-color-8: rgba(10, 10, 130, 0.08);
+  --effects-glow-primary-01: rgba(10, 10, 130, 0.3);
+  --effects-glow-positive: rgba(0, 135, 54, 0.3);
+  --effects-glow-warning: rgba(250, 200, 0, 0.3);
+  --effects-glow-alert: rgba(233, 122, 72, 0.3);
+  --effects-glow-error: rgba(223, 2, 27, 0.3);
+  --effects-glow-secondary-09: rgba(50, 220, 200, 0.3);
+  --tertiary-disabled: var(--primary-07);
+  --secondary-12: var(--primary-02);
+}
