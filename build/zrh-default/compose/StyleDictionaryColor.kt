@@ -23,7 +23,7 @@ object StyleDictionaryColor {
   val neutralsGrey = Color(0xffababab)
   val neutralsLightGrey = Color(0xfffbfbfb)
   val neutralsWhite = Color(0xffffffff)
-  val primary01 = Color(0xffcc0000)
+  val primary01 = Color(0xff1415fa)
   val primary02 = Color(0xff0a0a82)
   val primary03 = Color(0xff636f99)
   val primary04 = Color(0xff141432)
