@@ -9,10 +9,10 @@
 import UIKit
 
 internal struct StyleDictionaryStruct {
-    internal static let cornersCornerRadiusL = CGFloat(24.00)
-    internal static let cornersCornerRadiusM = CGFloat(12.00)
-    internal static let cornersCornerRadiusRound = CGFloat(999.01)
-    internal static let cornersCornerRadiusS = CGFloat(6.00)
+    internal static let cornersCornerRadiusL = 24
+    internal static let cornersCornerRadiusM = 12
+    internal static let cornersCornerRadiusRound = 999
+    internal static let cornersCornerRadiusS = 6
     internal static let effectsGlowAlert = UIColor(red: 0.914, green: 0.478, blue: 0.282, alpha: 0.30196078431372547)
     internal static let effectsGlowError = UIColor(red: 0.875, green: 0.008, blue: 0.106, alpha: 0.30196078431372547)
     internal static let effectsGlowPositive = UIColor(red: 0.000, green: 0.529, blue: 0.212, alpha: 0.30196078431372547)
@@ -26,7 +26,7 @@ internal struct StyleDictionaryStruct {
     internal static let neutralsGrey = UIColor(red: 0.671, green: 0.671, blue: 0.671, alpha: 1)
     internal static let neutralsLightGrey = UIColor(red: 0.984, green: 0.984, blue: 0.984, alpha: 1)
     internal static let neutralsWhite = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1)
-    internal static let primary01 = UIColor(red: 0.078, green: 0.082, blue: 0.980, alpha: 1)
+    internal static let primary01 = UIColor(red: 0.800, green: 0.000, blue: 0.000, alpha: 1)
     internal static let primary02 = UIColor(red: 0.039, green: 0.039, blue: 0.510, alpha: 1)
     internal static let primary03 = UIColor(red: 0.388, green: 0.435, blue: 0.600, alpha: 1)
     internal static let primary04 = UIColor(red: 0.078, green: 0.078, blue: 0.196, alpha: 1)

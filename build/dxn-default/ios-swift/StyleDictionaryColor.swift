@@ -22,7 +22,7 @@ public enum StyleDictionaryColor {
     public static let neutralsGrey = UIColor(red: 0.671, green: 0.671, blue: 0.671, alpha: 1)
     public static let neutralsLightGrey = UIColor(red: 0.984, green: 0.984, blue: 0.984, alpha: 1)
     public static let neutralsWhite = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1)
-    public static let primary01 = UIColor(red: 0.078, green: 0.082, blue: 0.980, alpha: 1)
+    public static let primary01 = UIColor(red: 0.800, green: 0.000, blue: 0.000, alpha: 1)
     public static let primary02 = UIColor(red: 0.039, green: 0.039, blue: 0.510, alpha: 1)
     public static let primary03 = UIColor(red: 0.388, green: 0.435, blue: 0.600, alpha: 1)
     public static let primary04 = UIColor(red: 0.078, green: 0.078, blue: 0.196, alpha: 1)
